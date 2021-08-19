@@ -1,11 +1,10 @@
-package net.razshare.svelte3jssr.proxy;
+package net.razshare.svelte3jssr.proxies;
 
 import java.nio.file.Paths;
 import org.graalvm.polyglot.Value;
 
 public class NodeProxy {
     private static Value require;
-    private static Value svelte;
 
     private static final String WD = Paths.get("").toAbsolutePath().toString()+"/";
 
@@ -29,6 +28,10 @@ public class NodeProxy {
         return object;
     }
 
+    /**
+     * Set the proxy "require" function.<br />
+     * This should be set to the NodeJS "require" function.
+     */
     public static void setRequire(Value f){
         require = f;
     }

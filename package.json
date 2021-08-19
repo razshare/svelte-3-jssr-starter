@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "mvn compile & node --jvm --vm.cp=./target/classes ./src/main/nodejs/App.js"
+    "start": "mvn compile & node --jvm --vm.cp=./target/classes ./App.js"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
     "ejs": "^3.1.6",
+    "rollup": "^2.56.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-svelte": "^7.1.0",
     "svelte": "^3.0.0"
   },
   "dependencies": {
