@@ -3,8 +3,7 @@ package net.razshare.svelte3jssr.proxies;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import net.razshare.svelte3jssr.models.SvelteClientSideComponentResult;
-import net.razshare.svelte3jssr.models.SvelteServerSideComponentResult;
+import net.razshare.svelte3jssr.models.SvelteComponentResult;
 import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.ProxyObject;
 
@@ -13,11 +12,11 @@ public class SvelteProxy {
     private static Value unwrapJs;
     private static Value render;
 
-    public static SvelteClientSideComponentResult render(String source, String type){
-        return render(source, type, new HashMap<String,Object>(){});
+    public static SvelteComponentResult render(String source, String generate){
+        return render(source, generate, new HashMap<String,Object>(){});
     }
-    public static SvelteClientSideComponentResult render(String source, String type, Map<String,Object> options){
-        Value component = render.execute(source, type, ProxyObject.fromMap(options));
+    public static SvelteComponentResult render(String source, String generate, Map<String,Object> options){
+        Value component = render.execute(source, generate, ProxyObject.fromMap(options));
 
         System.out.println(component.toString());
 
@@ -25,7 +24,7 @@ public class SvelteProxy {
         String cssCode = component.hasMember("css")?component.getMember("css").getMember("code").asString():"";
         String head = component.getMember("head").asString();
         String html = component.getMember("html").asString();
-        return new SvelteClientSideComponentResult(jsCode,cssCode,head,html);
+        return new SvelteComponentResult(jsCode,cssCode,head,html);
     }
 
     public static void compile(String source, String generate, Consumer<String> callback){
@@ -41,31 +40,6 @@ public class SvelteProxy {
             System.out.println("Some error occoured:\n"+result.toString());
         });
         
-    }
-
-    public static SvelteServerSideComponentResult require(String filename){
-        return require(filename, new HashMap<String,Object>(){});
-    }
-
-    public static SvelteServerSideComponentResult require(String filename, Map<String,Object> options){
-        return require(filename, options, true);
-    }
-
-    public static SvelteServerSideComponentResult require(String filename, Map<String,Object> options, boolean scopeToProject){
-        Value object = NodeProxy.require(filename,scopeToProject);
-        Value defaults = object.getMember("default");
-        Value render = defaults.getMember("render");
-        Value result = render.execute(ProxyObject.fromMap(options));
-
-        String head = result.getMember("head").asString();
-        String html = result.getMember("html").asString();
-        String css = result.getMember("css").getMember("code").asString();
-
-        return new SvelteServerSideComponentResult(
-            css,
-            head,
-            html
-        );
     }
 
     public static String unwrapJs(){

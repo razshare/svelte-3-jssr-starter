@@ -83,12 +83,12 @@ SvelteProxy.setCompiler(async (source,generate)=>{
     return output[0].code;
 })
 
-SvelteProxy.setRender((code,type,options)=>{
+SvelteProxy.setRender((code,generate,options)=>{
     const Component = eval(code)
 
-    switch(type){
+    switch(generate){
         case 'dom':
-            return new Component(options)
+            return new Component(options);
         case 'ssr':
             return Component.render(options)
     }

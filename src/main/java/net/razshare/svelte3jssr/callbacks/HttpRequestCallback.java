@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.razshare.svelte3jssr.models.SvelteClientSideComponentResult;
+import net.razshare.svelte3jssr.models.SvelteComponentResult;
 import net.razshare.svelte3jssr.proxies.SvelteProxy;
 import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.ProxyObject;
@@ -111,7 +111,7 @@ public class HttpRequestCallback {
         System.out.println("responding...");
         SvelteProxy.compile(WD+"/src/main/svelte/App.svelte", "ssr", (source)->{
             System.out.println("done!");
-            SvelteClientSideComponentResult result = SvelteProxy.render(source,"ssr");
+            SvelteComponentResult result = SvelteProxy.render(source,"ssr");
             String head = result.getHead();
             String body = result.getHtml();
             String css = result.getCssCode();
@@ -133,7 +133,7 @@ public class HttpRequestCallback {
         SvelteProxy.compile(WD+"/src/main/svelte/App.svelte", "dom", (source)->{
             System.out.println("done!");
             
-            // SvelteClientSideComponentResult result = SvelteProxy.render(source);
+            // SvelteComponentResult result = SvelteProxy.render(source, "dom");
             // String head = result.getHead();
             // String body = result.getHtml();
             // String css = result.getCssCode();
