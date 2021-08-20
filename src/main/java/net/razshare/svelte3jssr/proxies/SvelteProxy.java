@@ -11,20 +11,32 @@ import org.graalvm.polyglot.proxy.ProxyObject;
 public class SvelteProxy {
     private static Value compiler;
     private static Value unwrapJs;
+    private static Value render;
 
+    public static SvelteClientSideComponentResult render(String source, String type){
+        return render(source, type, new HashMap<String,Object>(){});
+    }
+    public static SvelteClientSideComponentResult render(String source, String type, Map<String,Object> options){
+        Value component = render.execute(source, type, ProxyObject.fromMap(options));
 
-    public static void compile(String source, Consumer<SvelteClientSideComponentResult> callback){
-        compile(source, new HashMap<String, Object>(){}, callback);
+        System.out.println(component.toString());
+
+        String jsCode = component.hasMember("js")?component.getMember("js").getMember("code").asString():"";
+        String cssCode = component.hasMember("css")?component.getMember("css").getMember("code").asString():"";
+        String head = component.getMember("head").asString();
+        String html = component.getMember("html").asString();
+        return new SvelteClientSideComponentResult(jsCode,cssCode,head,html);
     }
 
-    public static void compile(String source, Map<String,Object> options, Consumer<SvelteClientSideComponentResult> callback){
-        Value compiled = compiler.execute(source,ProxyObject.fromMap(options));
+    public static void compile(String source, String generate, Consumer<String> callback){
+        compile(source, generate, new HashMap<String, Object>(){}, callback);
+    }
+
+    public static void compile(String source, String generate, Map<String,Object> options, Consumer<String> callback){
+        Value compiled = compiler.execute(source, generate);
         compiled
-        .invokeMember("then", (Consumer<Map<String,Map<String,String>>>) (result)->{
-            callback.accept(new SvelteClientSideComponentResult(
-                result.get("js").get("code"),
-                result.get("css").get("code")
-            ));
+        .invokeMember("then", (Consumer<String>) (result)->{
+            callback.accept(result);
         }).invokeMember("catch", (Consumer<Object>) (result)->{
             System.out.println("Some error occoured:\n"+result.toString());
         });
@@ -48,13 +60,11 @@ public class SvelteProxy {
         String head = result.getMember("head").asString();
         String html = result.getMember("html").asString();
         String css = result.getMember("css").getMember("code").asString();
-        String cssMap = result.getMember("css").getMember("map").asString();
 
         return new SvelteServerSideComponentResult(
-            head,
-            html,
             css,
-            cssMap
+            head,
+            html
         );
     }
 
@@ -68,5 +78,9 @@ public class SvelteProxy {
 
     public static void setUnwrapJs(Value f){
         unwrapJs = f;
+    }
+    
+    public static void setRender(Value f){
+        render = f;
     }
 }
