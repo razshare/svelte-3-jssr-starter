@@ -98,9 +98,6 @@ SvelteProxy.setCompiler(async (source,generate)=>{
 
 SvelteProxy.setRender((code,props)=>{
     const Component = eval(code)
-    console.log("############################################")
-    console.log("code:",Component.render.toString())
-    console.log("############################################")
     return Component.render(PREPRENDER_PROPS?props:{})
 })
 ////////////////////////////////////////////////////

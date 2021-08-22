@@ -14,9 +14,11 @@
 <script>
     import { onMount } from "svelte"
     import SomeComponent from "./SomeComponent.svelte"
+    import test from './scripts/test.mjs'
     export let name = "default"
     onMount(()=>{
         console.log("App mounted!")
+        test()
     })
 </script>
 <h1>hello {name}!</h1>
