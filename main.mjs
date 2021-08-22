@@ -4,22 +4,35 @@ import http from "http"
 import { rollup } from 'rollup';
 
 
-const App = Java.type("net.razshare.svelte3jssr.App")
+const Entry = Java.type("net.razshare.svelte3jssr.Entry")
 const NodeProxy = Java.type("net.razshare.svelte3jssr.proxies.NodeProxy")
 const SvelteProxy = Java.type("net.razshare.svelte3jssr.proxies.SvelteProxy")
 const JavaProxy = Java.type("net.razshare.svelte3jssr.proxies.JavaProxy")
 
+// FLAGS START
+////////////////////////////////////////////////////
+//If this is enabled the server will cache in compiled ".svelte" files, making it faster to server.
+const USE_CACHE = true
+//If this is enabled, the server will include props in the prerendered version of the component.
+//This will make it easier to SEO.
+//Make no mistake the JS bundle will still contain your data and render it properly if this flag is disabled.
+const PREPRENDER_PROPS = false
+////////////////////////////////////////////////////
+// FLAGS END
 
 const compiledComponents = {}
 
 // This following instructions give Java access to some NodeJS functions and their context.
-// API starts
+// API STARTS
+////////////////////////////////////////////////////
 NodeProxy.setRequire((url)=>{
     return importScripts(url)
 })
 
-SvelteProxy.setCompiler(async (source,generate)=>{   
-    if(compiledComponents[source]) return compiledComponents[source]
+NodeProxy.setJson(JSON)
+
+SvelteProxy.setCompiler(async (source,generate)=>{
+    if(USE_CACHE && compiledComponents[`${source}::${generate}`]) return compiledComponents[`${source}::${generate}`]
 
     const bundle = await rollup({
         input:source,
@@ -74,30 +87,39 @@ SvelteProxy.setCompiler(async (source,generate)=>{
             resolve({ browser: true }),
             // ...
         ]
-    });
+    })
 
     const { output } = await bundle.generate({
         format:'iife'
-    });
-    compiledComponents[source] = output[0].code;
-    return output[0].code;
+    })
+    compiledComponents[`${source}::${generate}`] = output[0].code
+    return output[0].code
 })
 
-SvelteProxy.setRender((code,generate,options)=>{
+SvelteProxy.setRender((code,props)=>{
     const Component = eval(code)
-
-    switch(generate){
-        case 'dom':
-            return new Component(options);
-        case 'ssr':
-            return Component.render(options)
-    }
-
-    return ''
+    console.log("############################################")
+    console.log("code:",Component.render.toString())
+    console.log("############################################")
+    return Component.render(PREPRENDER_PROPS?props:{})
 })
-// API ends
+////////////////////////////////////////////////////
+// API ENDS
 
-const app = new App()
+
+
+/**
+ * I'm running a node js server here but you can just initialize your 
+ * own Java server inside src/main/java/Entry.java instead.
+ * 
+ * It will probably be hard to spin off a Spring Boot server because Spring Boot does some code transformations that are not possible in GraalVM, at least not with the default Spring Boot project setup.
+ * However since then this came out: https://spring.io/blog/2020/04/16/spring-tips-the-graalvm-native-image-builder-feature
+ * 
+ * That being said you should be perfectly able to run a Quarkus web server using the same familiar Spring API.
+ * For more information refer to: https://quarkus.io/
+ */
+
+new Entry() //initialize Java app.
 
 http
 .createServer((request, response)=>{

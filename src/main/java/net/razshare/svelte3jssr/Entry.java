@@ -1,10 +1,10 @@
 package net.razshare.svelte3jssr;
 
-public class App {
+public class Entry {
     /**
      * Entry point of your Java application.
      */
-    public App(){
+    public Entry(){
         System.out.println("Java context started.");
     }
 }

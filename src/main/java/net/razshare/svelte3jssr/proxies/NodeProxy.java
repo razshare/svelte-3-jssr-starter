@@ -1,10 +1,13 @@
 package net.razshare.svelte3jssr.proxies;
 
 import java.nio.file.Paths;
+import java.util.HashMap;
 import org.graalvm.polyglot.Value;
+import org.graalvm.polyglot.proxy.ProxyObject;
 
 public class NodeProxy {
     private static Value require;
+    private static Value json;
 
     private static final String WD = Paths.get("").toAbsolutePath().toString()+"/";
 
@@ -28,6 +31,14 @@ public class NodeProxy {
         return object;
     }
 
+    public static Object JSONParse(String input){
+        return json.invokeMember("parse", input).asHostObject();
+    }
+
+    public static String JSONStringify(HashMap<String,Object> object){
+        return json.invokeMember("stringify", ProxyObject.fromMap(object)).asString();
+    }
+
     /**
      * Set the proxy "require" function.<br />
      * This should be set to the NodeJS "require" function.
@@ -35,4 +46,9 @@ public class NodeProxy {
     public static void setRequire(Value f){
         require = f;
     }
+
+    public static void setJson(Value o){
+        json = o;
+    }
+
 }
