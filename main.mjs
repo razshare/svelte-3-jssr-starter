@@ -16,7 +16,7 @@ const USE_CACHE = true
 //If this is enabled, the server will include props in the prerendered version of the component.
 //This will make it easier to SEO.
 //Make no mistake the JS bundle will still contain your data and render it properly if this flag is disabled.
-const PREPRENDER_PROPS = false
+const PREPRENDER_PROPS = true
 ////////////////////////////////////////////////////
 // FLAGS END
 

@@ -8,15 +8,16 @@
 
         const TestClass = Java.type("net.razshare.svelte3jssr.tools.TestClass")
         let test = new TestClass()
-        console.log("Here's a message from Java:",test.getMessage());
+        console.log("Here's a message from Java:",test.getMessage())
     }
 </script>
 <script>
-    import { onMount } from "svelte";
-    export let name = "default";
+    import { onMount } from "svelte"
+    import SomeComponent from "./SomeComponent.svelte"
+    export let name = "default"
     onMount(()=>{
-        console.log("App mounted!");
+        console.log("App mounted!")
     })
 </script>
-
 <h1>hello {name}!</h1>
+<SomeComponent/>

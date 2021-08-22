@@ -1,0 +1,1 @@
+This is a secondary component imported using "import".
