@@ -11,7 +11,7 @@ const JavaProxy = Java.type("net.razshare.svelte3jssr.proxies.JavaProxy")
 
 // FLAGS START
 ////////////////////////////////////////////////////
-//If this is enabled the server will cache in compiled ".svelte" files, making it faster to server.
+//If this is enabled the server will cache in compiled ".svelte" files, making it faster to serve.
 const USE_CACHE = true
 //If this is enabled, the server will include props in the prerendered version of the component.
 //This will make it easier to SEO.
