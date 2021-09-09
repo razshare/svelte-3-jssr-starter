@@ -1,4 +1,4 @@
-package net.razshare.svelte3jssr.tools;
+package net.razshare.svelte3jssr.starter.tools;
 
 public class TestClass{
     public String getMessage(){
