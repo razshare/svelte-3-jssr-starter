@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "mvn compile & node --polyglot --jvm --inspect --vm.cp=./target/classes ./main.mjs"
+    "start": "mvn clean package & node --polyglot --jvm --inspect --vm.cp=./target/classes ./main.mjs"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",

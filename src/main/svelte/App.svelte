@@ -6,7 +6,7 @@
          * proper Svelte syntax: "export let name" and pass in the props from the compiler.
         */
 
-        const TestClass = Java.type("net.razshare.svelte3jssr.tools.TestClass")
+        const TestClass = Java.type("net.razshare.svelte3jssr.starter.tools.TestClass")
         let test = new TestClass()
         console.log("Here's a message from Java:",test.getMessage())
     }

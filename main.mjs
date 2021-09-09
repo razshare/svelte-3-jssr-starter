@@ -4,10 +4,10 @@ import http from "http"
 import { rollup } from 'rollup';
 
 
-const Entry = Java.type("net.razshare.svelte3jssr.Entry")
-const NodeProxy = Java.type("net.razshare.svelte3jssr.proxies.NodeProxy")
-const SvelteProxy = Java.type("net.razshare.svelte3jssr.proxies.SvelteProxy")
-const JavaProxy = Java.type("net.razshare.svelte3jssr.proxies.JavaProxy")
+const NodeProxy = Java.type("net.razshare.svelte3jssr.core.proxies.NodeProxy")
+const SvelteProxy = Java.type("net.razshare.svelte3jssr.core.proxies.SvelteProxy")
+const Entry = Java.type("net.razshare.svelte3jssr.starter.Entry")
+const JavaProxy = Java.type("net.razshare.svelte3jssr.starter.proxies.JavaProxy")
 
 // FLAGS START
 ////////////////////////////////////////////////////
