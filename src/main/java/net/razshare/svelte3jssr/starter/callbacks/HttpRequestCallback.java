@@ -1,9 +1,9 @@
-package net.razshare.svelte3jssr.callbacks;
+package net.razshare.svelte3jssr.starter.callbacks;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import net.razshare.svelte3jssr.proxies.SvelteProxy;
+import net.razshare.svelte3jssr.core.proxies.SvelteProxy;
 import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.ProxyObject;
 

@@ -1,4 +1,4 @@
-package net.razshare.svelte3jssr;
+package net.razshare.svelte3jssr.starter;
 
 public class Entry {
     /**

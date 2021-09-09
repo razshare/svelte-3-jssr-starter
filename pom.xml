@@ -36,6 +36,11 @@
       <artifactId>thymeleaf</artifactId>
       <version>3.0.12.RELEASE</version>
     </dependency>
+    <dependency>
+      <groupId>net.razshare.svelte3jssr</groupId>
+      <artifactId>core</artifactId>
+      <version>0.1.0</version>
+    </dependency>
   </dependencies>
 
   <build>

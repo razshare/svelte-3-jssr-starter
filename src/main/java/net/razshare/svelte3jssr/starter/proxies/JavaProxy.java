@@ -1,7 +1,7 @@
-package net.razshare.svelte3jssr.proxies;
+package net.razshare.svelte3jssr.starter.proxies;
 
 import java.io.IOException;
-import net.razshare.svelte3jssr.callbacks.HttpRequestCallback;
+import net.razshare.svelte3jssr.starter.callbacks.HttpRequestCallback;
 import org.graalvm.polyglot.Value;
 
 public class JavaProxy {
